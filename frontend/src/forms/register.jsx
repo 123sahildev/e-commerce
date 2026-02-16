@@ -7,8 +7,11 @@ import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import { useDispatch } from "react-redux"
+import { registerPass, registerFail, hidewarning } from "../reduxtool/slice.js"
 
 export default function register() {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const container = useRef(null);
     const heading = useRef(null);
@@ -26,14 +29,27 @@ export default function register() {
         data
       );
       
-      console.log(response.data.message);
-      
-        navigate('/login')
+      if (response.data.message === "Email already exits") {
+          dispatch(registerFail());
+          setTimeout(() => {
+            dispatch(hidewarning())
+          
+          }, 3000);
+          return
+      }
+        dispatch(registerPass())
+        
+        setTimeout(() => {
+          navigate('/login')
+          dispatch(hidewarning())
+        
+        }, 3000);
+        
+
 
         reset()
 
     }
-
 
   return (
     <>

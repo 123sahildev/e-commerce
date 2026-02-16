@@ -2,15 +2,34 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartArrowDown, faNavicon, faUser} from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { changeProfile } from '../reduxtool/slice.js'
 
 export default function header({ sideModel, setSideModel }) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const goProfile = async () => {
+      const checkLogin = localStorage.getItem("userId");
+      if (!checkLogin) {
+        return navigate('/register');
+      }
+        
+      return navigate('/profile')
+      
+    }
+
+    
   return (
     <>
       <div className='w-full flex items-center fixed z-10  h-13 l:h-18 bg-[#26ff00]'>
         <Link to={"/cart"} className='absolute right-3'><FontAwesomeIcon icon={faCartArrowDown} className='text-[white] text-[35px] l:text-[50px] hover:text-[whitesmoke]' /></Link>
 
         <div className='absolute right-16 l:right-20 flex flex-row items-center'>
-          <Link to={"/register"}><button className='px-1 l:py-1 items-center rounded-[50%] bg-[#0f0f0f5d]'><FontAwesomeIcon  icon={faUser} className='text-white text-[15px] l:text-[25px] ' /></button></Link>
+          <button onClick={goProfile} className='px-1 l:py-1 items-center rounded-[50%] bg-[#0f0f0f5d]'>
+            <FontAwesomeIcon  icon={faUser} className='text-white text-[15px] l:text-[25px] ' />
+          </button>
           <p className='font-[Arial] l:text-[17px] text-[#171717] text-[12px] l:ml-2 ml-1'>Sign in</p>
         </div>
       </div>

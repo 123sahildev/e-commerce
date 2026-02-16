@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { initialRender } from '../thunks/initialRender.jsx'
 import { changeCategory } from '../thunks/changeCategory.jsx';
-import { act } from 'react';
+
+let initialState = { allProducts : [], cartProducts : [], loader : false, login : false, register : { status : false, message : '' }, profile : '', login : { message : '', status : false}}
 
 const slicer = createSlice({
     name : "contents",
-    initialState : { allProducts : [], cartProducts : [], loader : false},
+    initialState,
     reducers : {
         productAction (state, action) {
             if (action.payload.type === 'addtocart') {
@@ -17,12 +18,41 @@ const slicer = createSlice({
             if (action.payload.type === 'addallcards') {
                 state.cartProducts = action.payload.cards;
             }
+        },
+
+        changeProfile (state, action) {
+            state.profile = action.payload.username;
+
+        },
+
+        registerPass (state) {
+            state.register.status = true;
+            state.register.message = "Register sucessfull!";
+        },
+
+        registerFail (state) {
+            state.register.status = true;
+            state.register.message = "Email already exist";
+        },
+        
+        loginPass (state) {
+            state.register.status = true;
+            state.register.message = 'Login sucessfull!'
+        },
+
+        loginFail (state) {
+            state.register.status = true;
+            state.register.message = "Incorrect email or password";
+        },
+
+        hidewarning (state) {
+            state.register.status = false;
         }
+        
     },
 
     extraReducers : (builder) => {
         builder.addCase(initialRender.pending, (state, action) => {
-            console.log('pending');
             state.loader = true;
         });
         builder.addCase(initialRender.fulfilled, (state, action) => {
@@ -32,26 +62,22 @@ const slicer = createSlice({
 
         });
         builder.addCase(initialRender.rejected, (state, action) => {
-            console.log('rejected');
         });
 
         builder.addCase(changeCategory.pending, (state) => {
-            console.log('pending');
             state.loader = true;
 
         })
         builder.addCase(changeCategory.fulfilled, (state, action) => {
             state.allProducts = action.payload;
-            console.log("fulfilled")
             state.loader = false;
 
         });
         builder.addCase(changeCategory.rejected, (state) => {
-            console.log("rejected")
-        })
+        });
     }
-})
+});
 
 
-export const { productAction } = slicer.actions
+export const { productAction, registerPass, registerFail, loginPass, loginFail, hidewarning, changeProfile } = slicer.actions
 export default slicer.reducer

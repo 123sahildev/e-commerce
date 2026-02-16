@@ -1,4 +1,6 @@
 const Login = require("../models/login_model");
+const jwt = require('jsonwebtoken');
+const secret = require('dotenv');
 
 
 const LoginAction = async (req, res) => {
@@ -9,8 +11,9 @@ const LoginAction = async (req, res) => {
     if (!checkemail) {
         return res.json({message : "Email does'nt exist"});
     }
-
-    return res.json({message : checkemail})
+    let key = process.env.KEY;
+    let token = jwt.sign({userId : checkemail._id}, key )
+    return res.json({message : token})
     
 }
 

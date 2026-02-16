@@ -6,12 +6,16 @@ const GetllCardsAction = require("./controllers/allcards_controller");
 const DeleteCardAction = require("./controllers/deletecard_controller");
 const RegisterAction = require("./controllers/register_controller");
 const LoginAction = require("./controllers/login_controller");
+const ProfileAction = require('./controllers/profile_controller');
+const middlewere = require("./auth.js")
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 Connected();
+
+app.post('/profile', middlewere, ProfileAction)
 
 app.post('/login', LoginAction);
 

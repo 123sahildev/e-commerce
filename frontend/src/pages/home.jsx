@@ -8,6 +8,7 @@ import Products from "../components/products.jsx";
 import Loader from "../loaders/loader.jsx";
 import CategoryModel from '../nav_models/sidemodel.jsx'
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import Formlab from "../loaders/formlab.jsx";
 
 export default function home() {
   const [sideModel, setSideModel] = useState(false);

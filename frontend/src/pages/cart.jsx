@@ -46,7 +46,7 @@ export const CardProducts = () => {
       else {
         let check = e.target.parentElement.parentElement.previousSibling.innerText;
         let keep = cartProducts.find(tr => tr?.description.slice(0, 20) === check.slice(0, 20));
-        let deleteres = await axios.post('http://10.254.131.229:5000/deletecard',{ id : keep.id });
+        let deleteres = await axios.post('http://192.168.1.192:5000/deletecard',{ id : keep.id });
         dispatch(productAction({type : 'removetocart', id : keep.id, userId : userId }));
       }
     }
